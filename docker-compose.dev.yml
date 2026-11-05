@@ -1,0 +1,43 @@
+# Environnement de développement sans Node installé sur le poste.
+#   docker volume create afrik_nm   (une seule fois)
+#   docker compose -f docker-compose.dev.yml up
+# Site + API : http://localhost:8888
+# Par défaut, utilise la base PostgreSQL locale (service db).
+# Pour travailler sur Neon : mettre DATABASE_URL dans .env.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: afrik
+    ports:
+      - "55432:5432"
+    volumes:
+      - afrik_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      retries: 20
+
+  app:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm install --no-audit --no-fund && node scripts/migrate.mjs && node scripts/dev-server.mjs"
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@db:5432/afrik}
+      CHOKIDAR_USEPOLLING: "true"
+    ports:
+      - "8888:8888"
+      - "24678:24678"
+    volumes:
+      - .:/app
+      - afrik_nm:/app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  afrik_pg:
+  afrik_nm:
+    external: true

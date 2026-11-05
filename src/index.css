@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-creme font-sans text-charbon antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-display;
+    font-variation-settings: "SOFT" 50;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-safran ring-offset-2 ring-offset-creme;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 font-board text-[15px] font-medium uppercase tracking-wider transition duration-150 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply btn bg-piment-dark text-creme hover:bg-bordeaux active:translate-y-px;
+  }
+  .btn-ghost {
+    @apply btn border border-charbon/20 text-charbon hover:border-charbon/50 hover:bg-charbon/5;
+  }
+  .btn-light {
+    @apply btn bg-creme text-bordeaux hover:bg-white;
+  }
+  .btn-sm {
+    @apply px-3 py-2 text-[13px];
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-charbon;
+  }
+  .input {
+    @apply w-full rounded-md border border-charbon/20 bg-white px-3 py-2.5 text-[15px] text-charbon placeholder:text-charbon-muted/70 transition focus:border-piment-dark focus:outline-none focus:ring-2 focus:ring-piment/25;
+  }
+  .input-error {
+    @apply border-piment-dark ring-2 ring-piment/20;
+  }
+  .card {
+    @apply rounded-xl border border-charbon/10 bg-white shadow-ticket;
+  }
+  .eyebrow {
+    @apply font-board text-[13px] font-medium uppercase tracking-[0.22em] text-piment-dark;
+  }
+  /* Pointillés de l'ardoise entre le nom du plat et son prix */
+  .leader {
+    @apply mx-2 flex-1 translate-y-[-4px] border-b-2 border-dotted border-current opacity-30;
+  }
+  /* Grain léger sur les surfaces sombres */
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .reveal {
+    @apply translate-y-3 opacity-0 transition duration-700 ease-out;
+  }
+  .reveal.is-visible {
+    @apply translate-y-0 opacity-100;
+  }
+}
